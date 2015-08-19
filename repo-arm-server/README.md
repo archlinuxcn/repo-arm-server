@@ -36,6 +36,7 @@ Nginx is strongly recommended for handle HTTP requests. `repo-arm.nginx.conf.exa
 * Variables:
     - `arch` : `i686` || `x86_64`
     - `pkgname` : _Exact_ package name
+    - `json` : `true` || `false`, if the result should be return in JSON format
 
 Example using cURL:
 
@@ -48,6 +49,7 @@ Example using cURL:
 * Variables:
     - `arch` : `i686` || `x86_64`
     - `pkgname` : package name criteria
+    - `json` : `true` || `false`, if the result should be return in JSON format
 
 Example using cURL:
 
@@ -56,7 +58,7 @@ Example using cURL:
 **Deprecated GET method**
 
 Pattern: `/search?arch=$arch&pkgname=$pkgname`
-where `arch` can be either `i686` or `x86_64`, and `$pkgname` is _exactly_ the package name(packages under `any` will be automatically added to results).
+where `arch` can be either `i686` or `x86_64`, and `$pkgname` is _exactly_ the package name(packages under `any` will be automatically added to results). Add `json=true` parameter to get json format result.
 
 Note for GET method: Special symbol like `+` should be encoded to `%2B`, or it will be trimmed and wont return the correct result.
 
