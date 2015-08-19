@@ -15,7 +15,7 @@ router.get('/', function(req, res) {
 router.get('/search', function(req, res) {
 
     var db = new sqlite3.Database(config.pkginfopath + '/pkginfo.db', sqlite3.OPEN_READONLY, function (err) {
-        if (err) return res.end(err);
+        if (err) return res.end(err.code);
     });
 
     var pkgarch = req.query.arch + '',
@@ -61,7 +61,7 @@ router.get('/search', function(req, res) {
 
 router.post('/exact', function(req, res) {
     var db = new sqlite3.Database(config.pkginfopath + '/pkginfo.db', sqlite3.OPEN_READONLY, function (err) {
-        if (err) return res.end(err);
+        if (err) return res.end(err.code);
     });
 
     // Get POST data
@@ -108,7 +108,7 @@ router.post('/exact', function(req, res) {
 
 router.post('/find', function(req, res) {
     var db = new sqlite3.Database(config.pkginfopath + '/pkginfo.db', sqlite3.OPEN_READONLY, function (err) {
-        if (err) return res.end(err);
+        if (err) return res.end(err.code);
     });
 
     // Get POST data
