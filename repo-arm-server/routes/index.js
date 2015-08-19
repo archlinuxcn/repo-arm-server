@@ -18,38 +18,41 @@ router.get('/search', function(req, res) {
         if (err) return res.end(err);
     });
 
-    // console.log(query);
-    // console.log(req.query.arch);
-    // console.log(req.query.pkgname);
-    // reset pkgs array.
+    var pkgarch = req.query.arch + '',
+        pkgname = req.query.pkgname + '';
     pkgs = [];
 
     db.each("SELECT * FROM pkginfo WHERE forarch=$pkgarch AND pkgname=$pkgname", {
-        $pkgarch: req.query.arch,
-        $pkgname: req.query.pkgname
+        $pkgarch: pkgarch,
+        $pkgname: pkgname
     }, function (err, row) {
         if(err) {
             return (err);
         }
         // Query success, return packages to client.
-        pkgs.push(row.pkgrepo + "|" + row.pkgname + "|" + row.pkgarch + "|" + row.pkgver + "|"
-            + config.downloadurl + row.pkgrepo + "/os/" + req.query.arch
-            + row.filename.substr(row.filename.lastIndexOf("/")) + "|"
-	    + row.pkgver.slice(row.pkgver.lastIndexOf("-") + 1)
-            + "\n");
-        pkgs = pkgs.naturalSort().reverse();
-        /*
-         res.write(
-         row.pkgrepo + "|" + row.pkgname + "|" + row.pkgarch + "|" + row.pkgver + "|"
-         + config.downloadurl + row.pkgrepo + "/os/" + req.query.arch
-         + row.filename.substr(row.filename.lastIndexOf("/")) + "|"
-         + row.pkgver.substr(row.pkgver.lastIndexOf("-" - 1))
-         + "\n"
-         );
-         */
-        // TODO what if package not found? currently return nothing.
+        if (req.query.json) {
+            pkgs.push({
+                repo: row.pkgrepo,
+                pkgname: row.pkgname,
+                pkgarch: row.pkgarch,
+                pkgver: row.pkgver,
+                download: config.downloadurl + row.pkgrepo + "/os/" + req.query.arch + row.filename.substr(row.filename.lastIndexOf("/")),
+                pkgrel: row.pkgver.slice(row.pkgver.lastIndexOf("-") + 1)
+            });
+        } else {
+            pkgs.push(row.pkgrepo + "|" + row.pkgname + "|" + row.pkgarch + "|" + row.pkgver + "|"
+                + config.downloadurl + row.pkgrepo + "/os/" + req.query.arch
+                + row.filename.substr(row.filename.lastIndexOf("/")) + "|"
+	            + row.pkgver.slice(row.pkgver.lastIndexOf("-") + 1)
+                + "\n");
+        }
+
     }, function() {
-        res.end(pkgs.toString().replace(/,/g, ''));
+        if (req.query.json) {
+            res.end(JSON.stringify(pkgs));
+        } else {
+            res.end(pkgs.naturalSort().reverse().toString().replace(/,/g, ''));
+        }
     });
 
 });
@@ -62,8 +65,8 @@ router.post('/exact', function(req, res) {
     });
 
     // Get POST data
-    var pkgarch = req.body.arch,
-        pkgname = req.body.pkgname;
+    var pkgarch = req.body.arch + '',
+        pkgname = req.body.pkgname + '';
     // console.log(pkgarch);
     // console.log(pkgname);
 
@@ -77,23 +80,29 @@ router.post('/exact', function(req, res) {
             return (err);
         }
         // Query success, return packages to client.
-        pkgs.push(row.pkgrepo + "|" + row.pkgname + "|" + row.pkgarch + "|" + row.pkgver + "|"
-            + config.downloadurl + row.pkgrepo + "/os/" + pkgarch
-            + row.filename.substr(row.filename.lastIndexOf("/")) + "|"
-	    + row.pkgver.slice(row.pkgver.lastIndexOf("-") + 1)
-            + "\n");
-        pkgs = pkgs.naturalSort().reverse();
-        /*
-         res.write(
-         row.pkgrepo + "|" + row.pkgname + "|" + row.pkgarch + "|" + row.pkgver + "|"
-         + config.downloadurl + row.pkgrepo + "/os/" + pkgarch
-         + row.filename.substr(row.filename.lastIndexOf("/")) + "|"
-         + row.pkgver.substr(row.pkgver.lastIndexOf("-" - 1))
-         + "\n"
-         );
-         */
+        if (req.body.json) {
+            pkgs.push({
+                repo: row.pkgrepo,
+                pkgname: row.pkgname,
+                pkgarch: row.pkgarch,
+                pkgver: row.pkgver,
+                download: config.downloadurl + row.pkgrepo + "/os/" + req.query.arch + row.filename.substr(row.filename.lastIndexOf("/")),
+                pkgrel: row.pkgver.slice(row.pkgver.lastIndexOf("-"))
+            });
+        } else {
+            pkgs.push(row.pkgrepo + "|" + row.pkgname + "|" + row.pkgarch + "|" + row.pkgver + "|"
+                + config.downloadurl + row.pkgrepo + "/os/" + req.query.arch
+                + row.filename.substr(row.filename.lastIndexOf("/")) + "|"
+	            + row.pkgver.slice(row.pkgver.lastIndexOf("-") + 1)
+                + "\n");
+        }
+
     }, function() {
-        res.end(pkgs.toString().replace(/,/g, ''));
+        if (req.body.json) {
+            res.end(JSON.stringify(pkgs));
+        } else {
+            res.end(pkgs.naturalSort().reverse().toString().replace(/,/g, ''));
+        }
     });
 });
 
@@ -117,23 +126,28 @@ router.post('/find', function(req, res) {
             return (err);
         }
         // Query success, return packages to client.
-        pkgs.push(row.pkgrepo + "|" + row.pkgname + "|" + row.pkgarch + "|" + row.pkgver + "|"
-            + config.downloadurl + row.pkgrepo + "/os/" + pkgarch
-            + row.filename.substr(row.filename.lastIndexOf("/")) + "|"
-	    + row.pkgver.slice(row.pkgver.lastIndexOf("-") + 1)
-            + "\n");
-        pkgs = pkgs.naturalSort().reverse();
-        /*
-         res.write(
-         row.pkgrepo + "|" + row.pkgname + "|" + row.pkgarch + "|" + row.pkgver + "|"
-         + config.downloadurl + row.pkgrepo + "/os/" + pkgarch
-         + row.filename.substr(row.filename.lastIndexOf("/")) + "|"
-         + row.pkgver.substr(row.pkgver.lastIndexOf("-" - 1))
-         + "\n"
-         );
-         */
+        if (req.body.json) {
+            pkgs.push({
+                repo: row.pkgrepo,
+                pkgname: row.pkgname,
+                pkgarch: row.pkgarch,
+                pkgver: row.pkgver,
+                download: config.downloadurl + row.pkgrepo + "/os/" + req.query.arch + row.filename.substr(row.filename.lastIndexOf("/")),
+                pkgrel: row.pkgver.slice(row.pkgver.lastIndexOf("-") + 1)
+            });
+        } else {
+            pkgs.push(row.pkgrepo + "|" + row.pkgname + "|" + row.pkgarch + "|" + row.pkgver + "|"
+                + config.downloadurl + row.pkgrepo + "/os/" + req.query.arch
+                + row.filename.substr(row.filename.lastIndexOf("/")) + "|"
+	            + row.pkgver.slice(row.pkgver.lastIndexOf("-") + 1)
+                + "\n");
+        }
     }, function() {
-        res.end(pkgs.toString().replace(/,/g, ''));
+        if (req.body.json) {
+            res.end(JSON.stringify(pkgs));
+        } else {
+            res.end(pkgs.naturalSort().reverse().toString().replace(/,/g, ''));
+        }
     });
 });
 
@@ -213,21 +227,21 @@ module.exports = router;
 // Natural sort function from
 // http://stackoverflow.com/questions/4373018/sort-array-of-numeric-alphabetical-elements-natural-sort
 Array.prototype.naturalSort = function() {
-    var a, b, a1, b1, rx=/(\d+)|(\D+)/g, rd=/\d+/;
+    var a, b, a1, b1, rx = /(\d+)|(\D+)/g, rd=/\d+/;
     return this.sort(function(as, bs){
-        a= String(as).toLowerCase().match(rx);
-        b= String(bs).toLowerCase().match(rx);
+        a = String(as).toLowerCase().match(rx);
+        b = String(bs).toLowerCase().match(rx);
         while(a.length && b.length){
-            a1= a.shift();
-            b1= b.shift();
+            a1 = a.shift();
+            b1 = b.shift();
             if(rd.test(a1) || rd.test(b1)){
                 if(!rd.test(a1)) return 1;
                 if(!rd.test(b1)) return -1;
-                if(a1!= b1) return a1-b1;
+                if(a1 != b1) return a1 - b1;
             }
-            else if(a1!= b1) return a1> b1? 1: -1;
+            else if(a1 != b1) return a1 > b1? 1: -1;
         }
-        return a.length- b.length;
+        return a.length - b.length;
     });
 };
 
