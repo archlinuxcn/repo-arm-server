@@ -86,7 +86,7 @@ router.post('/exact', function(req, res) {
                 pkgname: row.pkgname,
                 pkgarch: row.pkgarch,
                 pkgver: row.pkgver,
-                download: config.downloadurl + row.pkgrepo + "/os/" + req.query.arch + row.filename.substr(row.filename.lastIndexOf("/")),
+                download: config.downloadurl + row.pkgrepo + "/os/" + pkgarch + row.filename.substr(row.filename.lastIndexOf("/")),
                 pkgrel: row.pkgver.slice(row.pkgver.lastIndexOf("-"))
             });
         } else {
@@ -132,7 +132,7 @@ router.post('/find', function(req, res) {
                 pkgname: row.pkgname,
                 pkgarch: row.pkgarch,
                 pkgver: row.pkgver,
-                download: config.downloadurl + row.pkgrepo + "/os/" + req.query.arch + row.filename.substr(row.filename.lastIndexOf("/")),
+                download: config.downloadurl + row.pkgrepo + "/os/" + pkgarch + row.filename.substr(row.filename.lastIndexOf("/")),
                 pkgrel: row.pkgver.slice(row.pkgver.lastIndexOf("-") + 1)
             });
         } else {
