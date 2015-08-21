@@ -91,7 +91,7 @@ router.post('/exact', function(req, res) {
             });
         } else {
             pkgs.push(row.pkgrepo + "|" + row.pkgname + "|" + row.pkgarch + "|" + row.pkgver + "|"
-                + config.downloadurl + row.pkgrepo + "/os/" + req.query.arch
+                + config.downloadurl + row.pkgrepo + "/os/" + pkgarch
                 + row.filename.substr(row.filename.lastIndexOf("/")) + "|"
 	            + row.pkgver.slice(row.pkgver.lastIndexOf("-") + 1)
                 + "\n");
@@ -137,7 +137,7 @@ router.post('/find', function(req, res) {
             });
         } else {
             pkgs.push(row.pkgrepo + "|" + row.pkgname + "|" + row.pkgarch + "|" + row.pkgver + "|"
-                + config.downloadurl + row.pkgrepo + "/os/" + req.query.arch
+                + config.downloadurl + row.pkgrepo + "/os/" + pkgarch
                 + row.filename.substr(row.filename.lastIndexOf("/")) + "|"
 	            + row.pkgver.slice(row.pkgver.lastIndexOf("-") + 1)
                 + "\n");
