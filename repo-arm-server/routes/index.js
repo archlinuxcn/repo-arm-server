@@ -29,7 +29,7 @@ router.get('/search', function(req, res) {
         if(err) {
             return (err);
         }
-        pkgs.push(sum(row, req.query.json));
+        pkgs.push(sum(row, pkgarch, req.query.json));
 
     }, function() {
         if (req.query.json) {
@@ -64,7 +64,7 @@ router.post('/exact', function(req, res) {
             return (err);
         }
         // Query success, return packages to client.
-        pkgs.push(sum(row, req.body.json));
+        pkgs.push(sum(row, pkgarch, req.body.json));
 
     }, function() {
         if (req.body.json) {
@@ -95,7 +95,7 @@ router.post('/find', function(req, res) {
             return (err);
         }
 
-        pkgs.push(sum(row, req.body.json));
+        pkgs.push(sum(row, pkgarch, req.body.json));
 
     }, function() {
         if (req.body.json) {
@@ -179,20 +179,20 @@ router.get('/archive/:year/:month/:day/:repo/os/:pkgarch/:pkgfile', function(req
 
 module.exports = router;
 
-function sum(row, isJson) {
+function sum(row, arch, isJson) {
 
     if (isJson) {
         return {
             repo: row.pkgrepo,
             pkgname: row.pkgname,
-            pkgarch: pkgarch,
+            pkgarch: arch,
             pkgver: row.pkgver,
-            download: config.downloadurl + row.pkgrepo + "/os/" + pkgarch + row.filename.substr(row.filename.lastIndexOf("/")),
+            download: config.downloadurl + row.pkgrepo + "/os/" + arch + row.filename.substr(row.filename.lastIndexOf("/")),
             pkgrel: row.pkgver.slice(row.pkgver.lastIndexOf("-") + 1)
         };
     } else {
-        return row.pkgrepo + "|" + row.pkgname + "|" + pkgarch + "|" + row.pkgver + "|" +
-            config.downloadurl + row.pkgrepo + "/os/" + pkgarch +
+        return row.pkgrepo + "|" + row.pkgname + "|" + arch + "|" + row.pkgver + "|" +
+            config.downloadurl + row.pkgrepo + "/os/" + arch +
             row.filename.substr(row.filename.lastIndexOf("/")) + "|" +
             row.pkgver.slice(row.pkgver.lastIndexOf("-") + 1) +
             "\n";
