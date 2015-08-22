@@ -34,14 +34,14 @@ router.get('/search', function(req, res) {
             pkgs.push({
                 repo: row.pkgrepo,
                 pkgname: row.pkgname,
-                pkgarch: row.pkgarch,
+                pkgarch: pkgarch,
                 pkgver: row.pkgver,
-                download: config.downloadurl + row.pkgrepo + "/os/" + row.pkgarch + row.filename.substr(row.filename.lastIndexOf("/")),
+                download: config.downloadurl + row.pkgrepo + "/os/" + pkgarch + row.filename.substr(row.filename.lastIndexOf("/")),
                 pkgrel: row.pkgver.slice(row.pkgver.lastIndexOf("-") + 1)
             });
         } else {
-            pkgs.push(row.pkgrepo + "|" + row.pkgname + "|" + row.pkgarch + "|" + row.pkgver + "|"
-                + config.downloadurl + row.pkgrepo + "/os/" + row.pkgarch
+            pkgs.push(row.pkgrepo + "|" + row.pkgname + "|" + pkgarch + "|" + row.pkgver + "|"
+                + config.downloadurl + row.pkgrepo + "/os/" + pkgarch
                 + row.filename.substr(row.filename.lastIndexOf("/")) + "|"
 	            + row.pkgver.slice(row.pkgver.lastIndexOf("-") + 1)
                 + "\n");
@@ -84,14 +84,14 @@ router.post('/exact', function(req, res) {
             pkgs.push({
                 repo: row.pkgrepo,
                 pkgname: row.pkgname,
-                pkgarch: row.pkgarch,
+                pkgarch: pkgarch,
                 pkgver: row.pkgver,
-                download: config.downloadurl + row.pkgrepo + "/os/" + row.pkgarch + row.filename.substr(row.filename.lastIndexOf("/")),
+                download: config.downloadurl + row.pkgrepo + "/os/" + pkgarch + row.filename.substr(row.filename.lastIndexOf("/")),
                 pkgrel: row.pkgver.slice(row.pkgver.lastIndexOf("-"))
             });
         } else {
-            pkgs.push(row.pkgrepo + "|" + row.pkgname + "|" + row.pkgarch + "|" + row.pkgver + "|"
-                + config.downloadurl + row.pkgrepo + "/os/" + row.pkgarch
+            pkgs.push(row.pkgrepo + "|" + row.pkgname + "|" + pkgarch + "|" + row.pkgver + "|"
+                + config.downloadurl + row.pkgrepo + "/os/" + pkgarch
                 + row.filename.substr(row.filename.lastIndexOf("/")) + "|"
 	            + row.pkgver.slice(row.pkgver.lastIndexOf("-") + 1)
                 + "\n");
@@ -130,14 +130,14 @@ router.post('/find', function(req, res) {
             pkgs.push({
                 repo: row.pkgrepo,
                 pkgname: row.pkgname,
-                pkgarch: row.pkgarch,
+                pkgarch: pkgarch,
                 pkgver: row.pkgver,
-                download: config.downloadurl + row.pkgrepo + "/os/" + row.pkgarch + row.filename.substr(row.filename.lastIndexOf("/")),
+                download: config.downloadurl + row.pkgrepo + "/os/" + pkgarch + row.filename.substr(row.filename.lastIndexOf("/")),
                 pkgrel: row.pkgver.slice(row.pkgver.lastIndexOf("-") + 1)
             });
         } else {
-            pkgs.push(row.pkgrepo + "|" + row.pkgname + "|" + row.pkgarch + "|" + row.pkgver + "|"
-                + config.downloadurl + row.pkgrepo + "/os/" + row.pkgarch
+            pkgs.push(row.pkgrepo + "|" + row.pkgname + "|" + pkgarch + "|" + row.pkgver + "|"
+                + config.downloadurl + row.pkgrepo + "/os/" + pkgarch
                 + row.filename.substr(row.filename.lastIndexOf("/")) + "|"
 	            + row.pkgver.slice(row.pkgver.lastIndexOf("-") + 1)
                 + "\n");
