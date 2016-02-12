@@ -1,3 +1,7 @@
+## DEPRECATED
+
+Please switch to the official service at http://archive.archlinux.org as our service will be turned off soon.
+
 ## A.R.M - Arch Rollback Machine
 Arch Linux Chinese Community A.R.M server app & configurations.
 
